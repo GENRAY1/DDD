@@ -17,7 +17,10 @@ public class UserRepository:IUserRepository
     
     public async Task<User?> GetAsync(Guid id)
     {
-        var userModel = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var userModel = await _context.Users
+            .Include(u => u.Organization)
+            .FirstOrDefaultAsync(u => u.Id == id);
+        
         return userModel == null ? null : UserMapper.Map(userModel);
     }
 

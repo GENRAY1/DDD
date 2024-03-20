@@ -1,6 +1,9 @@
 using MediatR;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using UserService.API.Contracts;
+using UserService.API.Contracts.Organization.Validators;
+using UserService.API.Contracts.Organization;
+using UserService.API.Contracts.User;
 using UserService.Application.Abstractions.Commands;
 using UserService.Application.Abstractions.Queries;
 
@@ -11,10 +14,14 @@ namespace UserService.API.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public UserController(IMediator mediator)
+    private readonly IValidator <OrganizationUpdateRequest> _validatorOrganizationUpdateRequest;
+    public UserController(IMediator mediator, IValidator <OrganizationUpdateRequest> validatorOrganizationUpdateRequest)
     {
         _mediator = mediator;
+        _validatorOrganizationUpdateRequest = validatorOrganizationUpdateRequest;
     }
+    
+    
     [HttpGet]
     public async Task<IActionResult> GetUsers(Guid? organizationId, int page = 1, int countPerPage = 15,
         CancellationToken token = default)
@@ -26,7 +33,7 @@ public class UserController : ControllerBase
         var users = await _mediator.Send(new GetUsersQuery(organizationId, skip, countPerPage), token);
         
         //получаем записи пользователей в виде UserViewModel
-        var usersResponse = users.Select(u => new UserResponseModel(
+        var usersResponse = users.Select(u => new UserGetResponse(
             Id: u.Id,
             FirstName: u.FirstName,
             LastName: u.LastName,
@@ -44,11 +51,10 @@ public class UserController : ControllerBase
     /// <param name="token">Токен для отмены операции</param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<IActionResult> AddToOrganization(OrganizationRequestModel model, CancellationToken token)
+    public async Task<IActionResult> AddToOrganization(OrganizationUpdateRequest model, CancellationToken token)
     {
-        /*
-        //получаем результат валидации
-        var validationResult = await _validatorAddToOrganizationInput.ValidateAsync(model, token);
+        
+        var validationResult = await _validatorOrganizationUpdateRequest.ValidateAsync(model, token);
 
         if (!validationResult.IsValid)
         {
@@ -58,7 +64,7 @@ public class UserController : ControllerBase
                 Errors = validationResult.Errors.Select(x => $"{x.PropertyName}: {x.ErrorMessage}").ToArray()
             });
         }
-        */
+        
         
         //отправляем запрос на связывание пользователя с организацией
         await _mediator.Send(new AddUserToOrganizationCommand(model.Userid!.Value, model.OrganizationId!.Value), token);

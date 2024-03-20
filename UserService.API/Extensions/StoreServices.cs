@@ -23,6 +23,7 @@ public static class StoreServices
         {
             //указываем провайдера базы данных со строкой подключения
             config.UseNpgsql(connectionString);
+            config.EnableSensitiveDataLogging();
         });
 
         //регистрируем репозиторий для модели пользователя

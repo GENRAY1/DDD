@@ -29,6 +29,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RequestManager", "RequestManager", "{D1E29F8F-3184-45C7-B382-DAEBC1B7D29C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestManager.API", "RequestManager.API\RequestManager.API.csproj", "{4745CF8D-1F80-4E27-8895-9E7F112FE8A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,7 @@ Global
 		{A6C536CB-E225-46DF-A3A1-55D303EBD1DA} = {5CD3E66C-9668-4B0F-9905-2CAE4DB74573}
 		{F077FE3F-7ACB-4E39-88AB-7AB69635A0C1} = {A6C536CB-E225-46DF-A3A1-55D303EBD1DA}
 		{4C4AC16D-7215-43B5-872D-01453416EFF6} = {A6C536CB-E225-46DF-A3A1-55D303EBD1DA}
+		{4745CF8D-1F80-4E27-8895-9E7F112FE8A0} = {D1E29F8F-3184-45C7-B382-DAEBC1B7D29C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2A8FA738-7773-4DE7-B560-D2BCAD52AD9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -79,5 +84,9 @@ Global
 		{4C4AC16D-7215-43B5-872D-01453416EFF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C4AC16D-7215-43B5-872D-01453416EFF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C4AC16D-7215-43B5-872D-01453416EFF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4745CF8D-1F80-4E27-8895-9E7F112FE8A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4745CF8D-1F80-4E27-8895-9E7F112FE8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4745CF8D-1F80-4E27-8895-9E7F112FE8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4745CF8D-1F80-4E27-8895-9E7F112FE8A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

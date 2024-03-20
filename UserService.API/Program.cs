@@ -18,7 +18,7 @@ builder.Services.AddMassTransitServices(builder.Configuration);
 builder.Services.AddMediatorServices();
 
 //Метод регистрирует сервис FluentValidation в контейнере DI
-//builder.Services.AddValidationServices();
+builder.Services.AddValidationServices();
 
 //Метод регистрации сервисов по работе с базой данных в контейнере DI
 builder.Services.AddStoreServices(builder.Configuration);
@@ -31,7 +31,7 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-//app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

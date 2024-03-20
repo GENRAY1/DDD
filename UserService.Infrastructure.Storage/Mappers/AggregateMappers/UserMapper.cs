@@ -15,6 +15,12 @@ public class UserMapper
             Patronymic = model.Patronymic,
             PhoneNumber = model.PhoneNumber
         };
+        /*TODO
+        if (model.Organization != null)
+        {
+            user.SetToOrganization(model.Organization);    
+        }*/
+        
         return user;
     }
 }
