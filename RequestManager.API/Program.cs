@@ -17,8 +17,11 @@ builder.Services.AddMassTransitServices(builder.Configuration);
 //Метод регистрирует сервис FluentValidation в контейнере DI
 //builder.Services.AddValidationServices();
 
-//Метод регистрирует сервис IProducer в контейнере DI 
+//Метод регистрирует сервис IUserProducer в контейнере DI 
 builder.Services.AddTransient<IUserProducer, UserProducer>();
+
+//Метод регистрирует сервис IOrganizationProducer в контейнере DI 
+builder.Services.AddTransient<IOrganizationProducer, OrganizationProducer>();
 
 //Метод регистрирует сервис Swagger в контейнере DI 
 builder.Services.AddSwaggerGen();

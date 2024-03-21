@@ -27,6 +27,7 @@ public static class MassTransitServices
         services.AddMassTransit(x =>
         {
             x.AddConsumer<UserCreatedConsumer>();
+            x.AddConsumer<OrganizationCreatedConsumer>();
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(rmq);
