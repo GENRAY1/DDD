@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Shared.Models;
 using UserService.Application.Abstractions.Commands;
 
-namespace UserService.Infrastructure.MassTransit.Consumers;
+namespace UserService.Infrastructure.Bus.Consumers;
 
 
 /// <summary>

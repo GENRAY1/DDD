@@ -1,8 +1,6 @@
-using System.Configuration;
 using MassTransit;
-using UserService.Infrastructure.Bus.Consumers;
 
-namespace UserService.API.Extensions;
+namespace RequestManager.API.Extensions;
 
 /// <summary>
 /// Статический класс для регистрации сервиса MassTransit в контейнере DI 
@@ -21,12 +19,11 @@ public static class MassTransitServices
     {
         //Получаем строку подключения к RabbitMq
         var rmq = configuration.GetConnectionString("RabbitMq") ??
-                  throw new Exception("ConnectionStrings:RabbitMq");
-        
+            throw new Exception("ConnectionStrings:RabbitMq");
+
         //конфигурируем MassTransit
         services.AddMassTransit(x =>
         {
-            x.AddConsumer<UserCreatedConsumer>();
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(rmq);
