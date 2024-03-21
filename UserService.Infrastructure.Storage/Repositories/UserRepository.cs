@@ -25,6 +25,7 @@ public class UserRepository:IUserRepository
         
         return userModel == null ? null : UserMapper.Map(userModel);
     }
+    
 
     public async Task UpdateAsync(User user)
     {
@@ -54,6 +55,16 @@ public class UserRepository:IUserRepository
             .Take(take)
             .ToListAsync();
 
+        return users.Select(u => UserMapper.Map(u)).ToList();
+    }
+
+    public async Task<ICollection<User>> FindWithoutOrganizationAsync(int skip, int take)
+    {
+        var users = await _context.Users.Where(u => u.OrganizationId == null)
+            .OrderBy(u => u.Id)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
         return users.Select(u => UserMapper.Map(u)).ToList();
     }
 }

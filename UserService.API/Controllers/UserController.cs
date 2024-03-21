@@ -20,7 +20,21 @@ public class UserController : ControllerBase
         _mediator = mediator;
         _validatorOrganizationUpdateRequest = validatorOrganizationUpdateRequest;
     }
-    
+    [Route("WithoutOrganization")]
+    [HttpGet]
+    public async Task<IActionResult> GetUsersWithoutOrganization(int page = 1, int countPerPage = 15, CancellationToken token = default)
+    {
+        var skip = (page - 1) * countPerPage;
+        var users = await _mediator.Send(new GetUsersWithoutOrganizationQuery(skip, countPerPage), token);
+        var usersResponse = users.Select(u => new UserGetResponse(
+            Id: u.Id,
+            FirstName: u.FirstName,
+            LastName: u.LastName,
+            Patronymic: u.Patronymic,
+            PhoneNumber: u.PhoneNumber,
+            Email: u.Email)).ToArray();
+        return Ok(usersResponse);
+    }
     
     [HttpGet]
     public async Task<IActionResult> GetUsers(Guid? organizationId, int page = 1, int countPerPage = 15,

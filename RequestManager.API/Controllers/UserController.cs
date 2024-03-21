@@ -46,4 +46,5 @@ public class UserController(ISender mediator)
         //Отправляем 200
         return Ok();
     }
+    
 }

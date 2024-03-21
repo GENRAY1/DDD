@@ -30,4 +30,5 @@ public interface IUserRepository
     /// <param name="take">Количество записей которые нужно получить</param>
     /// <returns>Коллекция пользователей удовлетворяющих запросу</returns>
     Task<ICollection<User>> FindAsync(Guid? organizationId, int skip, int take);
+    Task<ICollection<User>> FindWithoutOrganizationAsync(int skip, int take);
 }
