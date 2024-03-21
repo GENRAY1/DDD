@@ -5,12 +5,9 @@ namespace UserService.Infrastructure.Storage.Mappers.ModelMappers;
 
 public class OrganizationModelMapper
 {
-    public static OrganizationModel Map(Organization user)
+    public static OrganizationModel Map(Organization organizationAggregate, OrganizationModel organizationModel)
     {
-        return new OrganizationModel
-        {
-            Id = user.Id,
-            Name = user.Name
-        };
+        organizationModel.Name = organizationAggregate.Name;
+        return organizationModel;
     }
 }

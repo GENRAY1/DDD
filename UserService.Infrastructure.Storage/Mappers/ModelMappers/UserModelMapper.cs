@@ -5,16 +5,18 @@ namespace UserService.Infrastructure.Storage.Mappers.ModelMappers;
 
 public class UserModelMapper
 {
-    public static UserModel Map(User user)
+    public static UserModel Map(User userAggregate, UserModel userModel)
     {
-        return new UserModel
+        userModel.FirstName = userAggregate.FirstName;
+        userModel.LastName = userAggregate.LastName;
+        userModel.Patronymic = userAggregate.Patronymic;
+        userModel.Email = userAggregate.Email;
+        userModel.PhoneNumber = userAggregate.PhoneNumber;
+        
+        if (userAggregate.OrganizationId.HasValue)
         {
-            Id = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-            Patronymic = user.Patronymic,
-            PhoneNumber = user.PhoneNumber
-        };
+            userModel.OrganizationId = userAggregate.OrganizationId;
+        }
+        return userModel;
     }
 }

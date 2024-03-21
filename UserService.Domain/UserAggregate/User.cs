@@ -25,7 +25,7 @@ public class User(Guid id):AggregateRoot(id)
     private string? _patronymic;
     private string _phoneNumber;
     private string _email;
-    
+
     public Guid? OrganizationId { get; private set; }
 
     public void SetToOrganization(Organization organization)

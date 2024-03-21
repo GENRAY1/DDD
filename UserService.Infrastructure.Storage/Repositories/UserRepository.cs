@@ -4,6 +4,7 @@ using UserService.Domain.UserAggregate;
 using UserService.Infrastructure.Storage.Context;
 using UserService.Infrastructure.Storage.Mappers.AggregateMappers;
 using UserService.Infrastructure.Storage.Mappers.ModelMappers;
+using UserService.Infrastructure.Storage.Models;
 
 namespace UserService.Infrastructure.Storage.Repositories;
 
@@ -18,6 +19,7 @@ public class UserRepository:IUserRepository
     public async Task<User?> GetAsync(Guid id)
     {
         var userModel = await _context.Users
+            .AsNoTracking()
             .Include(u => u.Organization)
             .FirstOrDefaultAsync(u => u.Id == id);
         
@@ -26,10 +28,11 @@ public class UserRepository:IUserRepository
 
     public async Task UpdateAsync(User user)
     {
-        var userModel = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+        var userModel = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == user.Id);
         if (userModel == null) return;
         
-        var u = UserModelMapper.Map(user);
+        var u = UserModelMapper.Map(user, userModel);
         _context.Users.Update(u);
         await _context.SaveChangesAsync();
         
@@ -37,7 +40,8 @@ public class UserRepository:IUserRepository
 
     public async Task AddAsync(User user)
     {
-        var userModel = UserModelMapper.Map(user);
+        var newUserModel = new UserModel{Id = user.Id};
+        var userModel = UserModelMapper.Map(user, newUserModel);
         _context.Users.Add(userModel);
         await _context.SaveChangesAsync();
     }

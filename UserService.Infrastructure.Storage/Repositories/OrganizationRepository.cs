@@ -5,6 +5,7 @@ using UserService.Domain.OrganizationAggregate;
 using UserService.Infrastructure.Storage.Context;
 using UserService.Infrastructure.Storage.Mappers.AggregateMappers;
 using UserService.Infrastructure.Storage.Mappers.ModelMappers;
+using UserService.Infrastructure.Storage.Models;
 
 
 namespace UserService.Infrastructure.Storage.Repositories;
@@ -19,7 +20,9 @@ public class OrganizationRepository:IOrganizationRepository
     
     public async Task<Organization?> GetAsync(Guid id)
     {
-        var organizationModel = await _context.Organizations.FirstOrDefaultAsync(u => u.Id == id);
+        var organizationModel = await _context.Organizations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
         return organizationModel == null ? null : OrganizationMapper.Map(organizationModel);
     }
 
@@ -28,7 +31,7 @@ public class OrganizationRepository:IOrganizationRepository
         var organizationModel = await _context.Organizations.FirstOrDefaultAsync(u => u.Id == organization.Id);
         if (organizationModel == null) return;
         
-        var org = OrganizationModelMapper.Map(organization);
+        var org = OrganizationModelMapper.Map(organization, organizationModel);
         _context.Organizations.Update(org);
         await _context.SaveChangesAsync();
         
@@ -36,7 +39,8 @@ public class OrganizationRepository:IOrganizationRepository
 
     public async Task AddAsync(Organization organization)
     {
-        var organizationModel = OrganizationModelMapper.Map(organization);
+        var newOrganizationModel = new OrganizationModel{ Id = organization.Id };
+        var organizationModel = OrganizationModelMapper.Map(organization, newOrganizationModel);
         _context.Organizations.Add(organizationModel);
         await _context.SaveChangesAsync();
     }
