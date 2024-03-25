@@ -9,7 +9,7 @@ namespace RequestManager.Application.Services.CommandsHandlers;
 /// Обработчик команды по добавлению пользователя
 /// </summary>
 /// <param name="producer">Интерфейс генерирующий отправку сообщения по шине</param>
-public class AddUserCommandHandler(IUserProducers producer) : IRequestHandler<AddUserCommand>
+public class AddUserByHeadersCommandHandler(IUserProducers producer) : IRequestHandler<AddUserByHeadersCommand>
 {
     /// <summary>
     /// Метод обработчик команды по добавлению пользователя
@@ -17,10 +17,10 @@ public class AddUserCommandHandler(IUserProducers producer) : IRequestHandler<Ad
     /// <param name="request">Команда для добавления пользователя</param>
     /// <param name="cancellationToken">Токен для отмены операции</param>
     /// <returns>Task</returns>
-    public Task Handle(AddUserCommand request, CancellationToken cancellationToken)
+    public Task Handle(AddUserByHeadersCommand request, CancellationToken cancellationToken)
     {
         //отправляем сообщение по шине
-        producer.UserCreateProducer(new UserDto(request.FirstName, request.LastName, request.PhoneNumber, request.Email,
+        producer.UserCreateByHeadersProducer(new UserDto(request.FirstName, request.LastName, request.PhoneNumber, request.Email,
             request.Patronymic));
         
         //возвращаем удачный результат задачи

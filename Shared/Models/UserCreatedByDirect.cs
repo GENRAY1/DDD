@@ -1,6 +1,6 @@
-﻿namespace Shared.Models;
+namespace Shared.Models;
 
-public class UserCreated(string firstName, string lastName, string phoneNumber, string email, string? patronymic = null)
+public class UserCreatedByDirect(string firstName, string lastName, string phoneNumber, string email, string? patronymic = null)
 {
     /// <summary>
     /// Имя пользователя
@@ -27,5 +27,3 @@ public class UserCreated(string firstName, string lastName, string phoneNumber, 
     /// </summary>
     public string Email { get; } = email;
 }
-
-    

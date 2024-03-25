@@ -9,10 +9,8 @@ public class AddOrganizationCommandHandler(IOrganizationRepository repository):I
 {
     public Task Handle(AddOrganizationCommand request, CancellationToken cancellationToken)
     {
-        return repository.AddAsync(new Organization(Guid.NewGuid())
-        {
-            Name = request.Name
-        });
+        Organization org = Organization.Create(Guid.NewGuid(), request.Name);
+        return repository.AddAsync(org);
     }
 }
 

@@ -1,4 +1,8 @@
 using MassTransit;
+using RabbitMQ.Client;
+using RequestManager.Application.Abstractions.Producers;
+using RequestManager.Infrastructure.Produce.Producers;
+using Shared.Models;
 
 namespace RequestManager.API.Extensions;
 
@@ -26,9 +30,41 @@ public static class MassTransitServices
         {
             x.UsingRabbitMq((context, cfg) =>
             {
+                // Fanout Exchange
                 cfg.Host(rmq);
-                cfg.ConfigureEndpoints(context);
+                cfg.Publish<UserCreated>(c =>
+                {
+                    c.ExchangeType = ExchangeType.Fanout;
+                });
+                cfg.Publish<OrganizationCreated>(c =>
+                {
+                    c.ExchangeType = ExchangeType.Fanout;
+                });
+                
+                // Direct Exchange
+                cfg.Publish<UserCreatedByDirect>( c =>
+                {
+                    c.ExchangeType = ExchangeType.Direct;
+                });
+                
+                // Topic Exchange 
+                cfg.Publish<UserCreatedByTopic>(c =>
+                {
+                    c.ExchangeType = ExchangeType.Topic;
+                });
+                
+                // Headers Exchange 
+                cfg.Publish<UserCreatedByHeaders>(c =>
+                {
+                    c.ExchangeType = ExchangeType.Headers;
+                });
             });
         });
+        
+        //Метод регистрирует сервис IUserProducers в контейнере DI 
+        services.AddTransient<IUserProducers, UserProducers>();
+
+        //Метод регистрирует сервис IOrganizationProducer в контейнере DI 
+        services.AddTransient<IOrganizationProducer, OrganizationProducer>();
     }
 }

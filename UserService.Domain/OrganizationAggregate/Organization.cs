@@ -3,21 +3,21 @@ using UserService.Domain.OrganizationAggregate.Exceptions;
 
 namespace UserService.Domain.OrganizationAggregate;
 
-public class Organization(Guid id) : AggregateRoot(id)
+public class Organization: AggregateRoot
 {
     public const int MaxNameLength = 100;
     public const int MinNameLength = 3;
-    
-    private string _name;
-
-    public string Name
+    private Organization(Guid id, string name):base(id)
     {
-        get => _name;
-        init
-        {
-            if(value.Length < MinNameLength || value.Length > MaxNameLength)
-                throw new IncorrectOrgNameException(MinNameLength, MaxNameLength);
-            _name = value;
-        }
+        Name = name;
     }
+
+    public static Organization Create(Guid id, string name)
+    {
+        if(name.Length < MinNameLength || name.Length > MaxNameLength)
+            throw new IncorrectOrgNameException(MinNameLength, MaxNameLength);
+        return new Organization(id, name);
+    }
+    
+    public string Name { get; private init; }
 }

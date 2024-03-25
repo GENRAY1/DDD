@@ -8,10 +8,10 @@ public class OrganizationMapper
 
     public static Organization Map(OrganizationModel model)
     {
-        var org = new Organization(model.Id)
-        {
-            Name = model.Name
-        };
+        var org = Organization.Create(
+            model.Id,
+            model.Name
+        );
         return org;
     }
     

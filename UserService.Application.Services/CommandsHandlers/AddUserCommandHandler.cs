@@ -18,13 +18,14 @@ public class AddUserCommandHandler(IUserRepository userStore) : IRequestHandler<
     /// <returns></returns>
     public Task Handle(AddUserCommand request, CancellationToken cancellationToken)
     {
-        return userStore.AddAsync(new User(Guid.NewGuid())
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Patronymic = request.Patronymic,
-            Email = request.Email,
-            PhoneNumber = request.PhoneNumber
-        });
+        var user = User.Create(
+            Guid.NewGuid(),
+            request.FirstName,
+            request.LastName,
+            request.Patronymic,
+            request.Email,
+            request.PhoneNumber);
+        
+        return userStore.AddAsync(user);
     }
 }

@@ -1,7 +1,4 @@
 using RequestManager.API.Extensions;
-using RequestManager.API.Extensions;
-using RequestManager.Application.Abstractions.Producers;
-using RequestManager.Infrastructure.Produce.Producers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,12 +13,6 @@ builder.Services.AddMassTransitServices(builder.Configuration);
 
 //Метод регистрирует сервис FluentValidation в контейнере DI
 //builder.Services.AddValidationServices();
-
-//Метод регистрирует сервис IUserProducer в контейнере DI 
-builder.Services.AddTransient<IUserProducer, UserProducer>();
-
-//Метод регистрирует сервис IOrganizationProducer в контейнере DI 
-builder.Services.AddTransient<IOrganizationProducer, OrganizationProducer>();
 
 //Метод регистрирует сервис Swagger в контейнере DI 
 builder.Services.AddSwaggerGen();

@@ -32,14 +32,11 @@ public class AddUserToOrganizationCommandHandler(
     {
         var user = await userStore.GetAsync(request.UserId);
         if (user == null) throw new UserNotFoundException(request.UserId);
+        if (user.OrganizationId.HasValue) throw new UserAlreadyInOrganizationException(user.Id, request.OrganizationId);
+        
         var organization = await organizationStore.GetAsync(request.OrganizationId);
-        if (user.OrganizationId.HasValue)
-        {
-            var userOrganization = await organizationStore.GetAsync(user.OrganizationId.Value);
-            throw new UserAlreadyInOrganizationException(user.Id, userOrganization!.Name);
-        }
-
         if (organization == null) throw new OrganizationNotFoundException(request.OrganizationId);
+        
         user.SetToOrganization(organization);
         logger.LogInformation("Пользователь {LastName} {FirstName} добавлен в организацию {OrgName}",
             user.LastName,

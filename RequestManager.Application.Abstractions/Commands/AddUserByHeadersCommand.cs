@@ -1,31 +1,36 @@
-﻿namespace Shared.Models;
+using MediatR;
 
-public class UserCreated(string firstName, string lastName, string phoneNumber, string email, string? patronymic = null)
+namespace RequestManager.Application.Abstractions.Commands;
+
+public class AddUserByHeadersCommand(
+    string firstName,
+    string lastName,
+    string phoneNumber,
+    string email,
+    string? patronymic = null) : IRequest
 {
     /// <summary>
-    /// Имя пользователя
+    /// Имя
     /// </summary>
     public string FirstName { get; } = firstName;
 
     /// <summary>
-    /// Фамилия пользователя
+    /// Фамилия
     /// </summary>
     public string LastName { get; } = lastName;
 
     /// <summary>
-    /// Отчество пользователя
+    /// Отчество
     /// </summary>
     public string? Patronymic { get; } = patronymic;
 
     /// <summary>
-    /// Номер телефона пользователя
+    /// Номер телефона
     /// </summary>
     public string PhoneNumber { get; } = phoneNumber;
 
     /// <summary>
-    /// Адрес электронной почты пользователя
+    /// Почта
     /// </summary>
     public string Email { get; } = email;
 }
-
-    

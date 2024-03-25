@@ -42,7 +42,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
                 
                 //исключения для ситуации если в организации пользователь с указанным id уже существует
                 case UserAlreadyInOrganizationException ex:
-                    message = $"Пользователь {ex.IdUser} уже находится в организации \"{ex.Name}\"";
+                    message = $"Пользователь {ex.IdUser} уже находится в организации \"{ex.OrganizationId}\"";
                     break;
                 
                 default:

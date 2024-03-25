@@ -22,6 +22,7 @@ public class UserController(ISender mediator)
     /// <param name="user">Модель для добавления пользователя</param>
     /// <param name="token">Токен отмены операции</param>
     /// <returns>Ответ 200</returns>
+    [Route("fanout")]
     [HttpPost]
     public async Task<IActionResult> AddUser(UserPostRequest user, CancellationToken token)
     {
@@ -46,6 +47,42 @@ public class UserController(ISender mediator)
         //Отправляем 200
         return Ok();
     }
+    [Route("direct")]
+    [HttpPost]
+    public async Task<IActionResult> AddUserByDirect(UserPostRequest user, CancellationToken token)
+    {
+        //Отправляем команду на добавление пользователя
+        await mediator.Send(
+            new AddUserByDirectCommand(user.FirstName!, user.LastName!, user.PhoneNumber!, user.Email!,
+                user.Patronymic), token);
+
+        //Отправляем 200
+        return Ok();
+    }
     
+    [Route("topic")]
+    [HttpPost]
+    public async Task<IActionResult> AddUserByTopic(UserPostRequest user, CancellationToken token)
+    {
+        //Отправляем команду на добавление пользователя
+        await mediator.Send(
+            new AddUserByTopicCommand(user.FirstName!, user.LastName!, user.PhoneNumber!, user.Email!,
+                user.Patronymic), token);
+
+        //Отправляем 200
+        return Ok();
+    }
+    [Route("headers")]
+    [HttpPost]
+    public async Task<IActionResult> AddUserByHeaders(UserPostRequest user, CancellationToken token)
+    {
+        //Отправляем команду на добавление пользователя
+        await mediator.Send(
+            new AddUserByHeadersCommand(user.FirstName!, user.LastName!, user.PhoneNumber!, user.Email!,
+                user.Patronymic), token);
+
+        //Отправляем 200
+        return Ok();
+    }
     
 }

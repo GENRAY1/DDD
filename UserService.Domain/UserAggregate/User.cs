@@ -5,88 +5,68 @@ using UserService.Domain.UserAggregate.Exceptions;
 
 namespace UserService.Domain.UserAggregate;
 
-public class User(Guid id):AggregateRoot(id)
+public class User : AggregateRoot
 {
-
     public static Regex RegexEmail => new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
     public static Regex RegexPhoneNumber => new Regex(@"^\+\d{11}$");
-    
+
     public const int MaxFirstNameLength = 50;
     public const int MinFirstNameLength = 3;
-    
+
     public const int MaxLastNameLength = 50;
     public const int MinLastNameLength = 3;
-    
+
     public const int MaxPatronymicLength = 50;
     public const int MinPatronymicLength = 3;
-    
-    private string _firstName;
-    private string _lastName;
-    private string? _patronymic;
-    private string _phoneNumber;
-    private string _email;
+    private User(
+        Guid id,
+        Guid? organizationId,
+        string firstName,
+        string lastName,
+        string? patronymic,
+        string email,
+        string phoneNumber
+    ) : base(id)
+    {
+        OrganizationId = organizationId;
+        FirstName = firstName;
+        LastName = lastName;
+        Patronymic = patronymic;
+        Email = email;
+        PhoneNumber = phoneNumber;
+    }
 
+    public string FirstName { get; private init; }
+    public string LastName { get; private init; }
+    public string? Patronymic { get; private init; }
+    public string PhoneNumber { get; private init; }
+    public string Email { get; private init; }
     public Guid? OrganizationId { get; private set; }
 
     public void SetToOrganization(Organization organization)
     {
         OrganizationId = organization.Id;
     }
-    
-    public required string FirstName
+    public static User Create(
+        Guid id,
+        string firstName,
+        string lastName,
+        string? patronymic,
+        string email,
+        string phoneNumber,
+        Guid? organizationId = null)
     {
-        get => _firstName;
-        init
-        {
-            if(value.Length is < MinFirstNameLength or > MaxFirstNameLength)
-                throw new IncorrectFirstNameException(MinFirstNameLength, MaxFirstNameLength);
-            _firstName = value;
-        }
-    }
-    
-    public required string LastName
-    {
-        get => _lastName;
-        init
-        {
-            if (value.Length is < MinLastNameLength or > MaxLastNameLength)
-                throw new IncorrectLastNameException(MinLastNameLength, MaxLastNameLength);
-            _lastName = value;
-        }
-    }
-
-    public required string? Patronymic
-    {
-        get => _patronymic;
-        init
-        {
-            if (!string.IsNullOrEmpty(value) && value.Length is < MinPatronymicLength or > MaxPatronymicLength)
-                throw new IncorrectPatronymicException(MinPatronymicLength, MaxPatronymicLength);
-            _patronymic = value;
-        }
-    }
-
-    public string PhoneNumber
-    {
-        get=> _phoneNumber; 
-        init
-        {
-            if(!RegexPhoneNumber.IsMatch(value))
-                throw new IncorrectPhoneNumberException();
-            _phoneNumber = value;
-        }
+        if (firstName.Length is < MinFirstNameLength or > MaxFirstNameLength)
+            throw new IncorrectFirstNameException(MinFirstNameLength, MaxFirstNameLength);
+        if (lastName.Length is < MinLastNameLength or > MaxLastNameLength)
+            throw new IncorrectLastNameException(MinLastNameLength, MaxLastNameLength);
+        if (!string.IsNullOrEmpty(patronymic) && patronymic.Length is < MinPatronymicLength or > MaxPatronymicLength)
+            throw new IncorrectPatronymicException(MinPatronymicLength, MaxPatronymicLength);
+        if (!RegexEmail.IsMatch(email))
+            throw new IncorrectEmailException();
+        if (!RegexPhoneNumber.IsMatch(phoneNumber))
+            throw new IncorrectPhoneNumberException();
         
-    }
-
-    public string Email
-    {
-        get => _email;
-        init
-        {
-            if(!RegexEmail.IsMatch(value))
-                throw new IncorrectEmailException();
-            _email = value;
-            
-        }
+        return new User(id, organizationId ,firstName, lastName, patronymic, email, phoneNumber);
     }
 }

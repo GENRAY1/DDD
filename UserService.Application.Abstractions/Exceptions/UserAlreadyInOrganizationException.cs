@@ -1,8 +1,8 @@
 namespace UserService.Application.Abstractions.Exceptions;
 
-public class UserAlreadyInOrganizationException(Guid idUser, string name)
-    : Exception($"The user with id {idUser} is already a member of the {name} organization")
+public class UserAlreadyInOrganizationException(Guid idUser, Guid organizationId)
+    : Exception($"The user with id {idUser} is already a member of the {organizationId} organization")
 {
     public Guid IdUser = idUser;
-    public readonly string Name = name;
+    public readonly Guid OrganizationId = organizationId;
 }
